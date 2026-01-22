@@ -97,10 +97,18 @@ SetTrayIcon()
 ; ============================================================================
 
 SetTrayIcon() {
-    iconPath := A_ScriptDir . "\..\resources\icons\FlowWheel.png"
-    if !FileExist(iconPath)
-        iconPath := A_ScriptDir . "\..\resources\FlowWheel.png" ; Legacy path
-    if FileExist(iconPath) {
-        TraySetIcon(iconPath)
+    ; Tìm icon ở nhiều vị trí để đảm bảo chạy đúng khi exe nằm ở bất kỳ đâu
+    iconCandidates := [
+        A_ScriptDir . "\resources\icons\FlowWheel.png",
+        A_ScriptDir . "\resources\FlowWheel.png",
+        A_ScriptDir . "\icons\FlowWheel.png",
+        A_ScriptDir . "\FlowWheel.png"
+    ]
+    for path in iconCandidates {
+        if FileExist(path) {
+            TraySetIcon(path)
+            return
+        }
     }
+    ; Nếu không tìm thấy, giữ icon mặc định
 }

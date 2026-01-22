@@ -48,13 +48,23 @@ ShowGestureGuide(*) {
     
     guideGui.AddText("x50 y185 w230 h280 Background" . colors.bgDark . " +0x400000", "")
     try {
-        guidePath := A_ScriptDir . "\..\resources\images\mouse_guide.png"
-        if !FileExist(guidePath)
-            guidePath := A_ScriptDir . "\..\resources\mouse_guide.png" ; Legacy path
-        if FileExist(guidePath)
-            guideGui.AddPicture("x65 y205 w200 h240", guidePath)
-        else
-            guideGui.SetFont("s9 c" . colors.textLight, "Segoe UI")      
+        guideCandidates := [
+            A_ScriptDir . "\resources\images\mouse_guide.png",
+            A_ScriptDir . "\resources\mouse_guide.png",
+            A_ScriptDir . "\images\mouse_guide.png",
+            A_ScriptDir . "\mouse_guide.png"
+        ]
+        found := false
+        for path in guideCandidates {
+            if FileExist(path) {
+                guideGui.AddPicture("x65 y205 w200 h240", path)
+                found := true
+                break
+            }
+        }
+        if !found {
+            guideGui.SetFont("s9 c" . colors.textLight, "Segoe UI")
+        }
     } catch {
         guideGui.SetFont("s9 c" . colors.textLight, "Segoe UI")
     }

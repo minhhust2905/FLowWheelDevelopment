@@ -5,13 +5,22 @@
 ; --- LOAD CONFIGURATION FROM FILE ---
 LoadConfig() {
     try {
-        ; Priority 1: Script directory resources
-        configFile := A_ScriptDir . "\..\resources\config\flowwheel.ini"
-        ; Priority 2: Legacy script directory
-        if !FileExist(configFile)
-            configFile := A_ScriptDir . "\..\resources\flowwheel.ini"
-        ; Priority 3: AppData for compiled exe
-        if (A_IsCompiled && !FileExist(configFile)) {
+        ; Ưu tiên: cùng cấp với exe
+        configCandidates := [
+            A_ScriptDir . "\resources\config\flowwheel.ini",
+            A_ScriptDir . "\resources\flowwheel.ini",
+            A_ScriptDir . "\config\flowwheel.ini",
+            A_ScriptDir . "\flowwheel.ini"
+        ]
+        configFile := ""
+        for path in configCandidates {
+            if FileExist(path) {
+                configFile := path
+                break
+            }
+        }
+        ; Nếu là exe và không tìm thấy, dùng AppData
+        if (A_IsCompiled && configFile = "") {
             configDir := A_AppData . "\FlowWheel"
             if !DirExist(configDir)
                 DirCreate(configDir)
@@ -97,20 +106,30 @@ LoadConfig() {
 ; --- SAVE CONFIGURATION TO FILE ---
 SaveConfig() {
     try {
-        ; Determine config file path
-        configFile := A_ScriptDir . "\..\resources\config\flowwheel.ini"
-        if !FileExist(A_ScriptDir . "\..\resources\config")
-            configFile := A_ScriptDir . "\..\resources\flowwheel.ini"
-        
-        ; If compiled and can't write to script dir, use AppData
-        if (A_IsCompiled && !FileExist(configFile)) {
+        ; Ưu tiên: cùng cấp với exe
+        configCandidates := [
+            A_ScriptDir . "\resources\config\flowwheel.ini",
+            A_ScriptDir . "\resources\flowwheel.ini",
+            A_ScriptDir . "\config\flowwheel.ini",
+            A_ScriptDir . "\flowwheel.ini"
+        ]
+        configFile := ""
+        for path in configCandidates {
+            configDir := ""
+            SplitPath(path, , &configDir)
+            if DirExist(configDir) {
+                configFile := path
+                break
+            }
+        }
+        ; Nếu là exe và không ghi được, dùng AppData
+        if (A_IsCompiled && (configFile = "" || !DirExist(configDir))) {
             configDir := A_AppData . "\FlowWheel"
             if !DirExist(configDir)
                 DirCreate(configDir)
             configFile := configDir . "\flowwheel.ini"
         }
-        
-        ; Ensure config directory exists
+        ; Đảm bảo thư mục tồn tại
         SplitPath(configFile, , &configDir)
         if !DirExist(configDir)
             DirCreate(configDir)

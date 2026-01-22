@@ -18,13 +18,13 @@ SavePositionDebounce(pos) {
 ; gestureGuideMap chứa hướng dẫn thao tác cho từng gesture
 global gestureGuideMap
 CreateGestureCard(gui, x, y, w, label, isChecked) {
-    ; Outer card (creates border effect) - viền xanh rêu khi active
-    borderBg := isChecked ? "4CAF50" : "E0E0E0"
+    ; Outer card (creates border effect) 
+    borderBg := isChecked ? "5A8FB2" : "E0E0E0"
     cardOuter := gui.AddText("x" x " y" y " w" w " h48 Background" . borderBg, "")
     RoundControl(cardOuter.Hwnd, 16)
     
-    ; Inner card - background xanh rêu nhẹ khi active (giữ cố định offset 2px)
-    innerBgColor := isChecked ? "DFF5E3" : "FFFFFF"
+    ; Inner card  (giữ cố định offset 2px)
+    innerBgColor := isChecked ? "D6E4F0" : "FFFFFF"
     innerBg := gui.AddText("x" (x+2) " y" (y+2) " w" (w-4) " h44 Background" . innerBgColor, "")
     RoundControl(innerBg.Hwnd, 14)
     
@@ -79,11 +79,11 @@ GestureCardClick(ctrl, *) {
     card.Value := !card.Value
 
     ; Update outer card background (border color)
-    outerBg := card.Value ? "4CAF50" : "E0E0E0"
+    outerBg := card.Value ? "5A8FB2" : "E0E0E0"
     card.cardOuter.Opt("Background" . outerBg)
 
     ; Update inner card color (giữ nguyên kích thước)
-    innerBgColor := card.Value ? "DFF5E3" : "FFFFFF"
+    innerBgColor := card.Value ? "D6E4F0" : "FFFFFF"
     card.innerBg.Opt("Background" . innerBgColor)
 
     ; Force redraw
@@ -111,12 +111,12 @@ GestureCardClick(ctrl, *) {
 ; === CREATE POSITION CARD (Radio-style Selection) ===
 CreatePositionCard(gui, x, y, w, label, icon, isSelected, positionValue) {
     ; Outer card
-    borderBg := isSelected ? "4CAF50" : "E0E0E0"
+    borderBg := isSelected ? "5A8FB2" : "E0E0E0"
     cardOuter := gui.AddText("x" x " y" y " w" w " h48 Background" . borderBg, "")
     RoundControl(cardOuter.Hwnd, 16)
     
     ; Inner card
-    innerBgColor := isSelected ? "DFF5E3" : "FFFFFF"
+    innerBgColor := isSelected ? "D6E4F0" : "FFFFFF"
     innerBg := gui.AddText("x" (x+2) " y" (y+2) " w" (w-4) " h44 Background" . innerBgColor, "")
     RoundControl(innerBg.Hwnd, 14)
     
@@ -173,8 +173,8 @@ PositionCardClick(ctrl, *) {
         isSelected := (posCard.position = selectedPosition)
 
         ; Update colors
-        outerBg := isSelected ? "4CAF50" : "E0E0E0"
-        innerBgColor := isSelected ? "DFF5E3" : "FFFFFF"
+        outerBg := isSelected ? "5A8FB2" : "E0E0E0"
+        innerBgColor := isSelected ? "D6E4F0" : "FFFFFF"
         posCard.cardOuter.Opt("Background" . outerBg)
         posCard.innerBg.Opt("Background" . innerBgColor)
 
@@ -234,7 +234,10 @@ ShowSettings() {
     global settingsGui
     try {
         if (IsSet(settingsGui) && IsObject(settingsGui)) {
+            ; Nếu đang mở thì ẩn đi
             settingsGui.Destroy()
+            settingsGui := unset
+            return
         }
     }
     CreateSettingsGui()
@@ -696,8 +699,10 @@ CreateSettingsGui() {
     ToggleSettingsMode() {
         global isAdvancedMode, settingsGui
         isAdvancedMode := !isAdvancedMode
-        settingsGui.Destroy()
-        SetTimer(() => ShowSettings(), -100)
+        if (IsSet(settingsGui) && IsObject(settingsGui)) {
+            settingsGui.Destroy()
+        }
+        CreateSettingsGui()
     }
 
     btnClose := settingsGui.AddButton("x500 y642 w250 h42", _t("✗ Đóng"))

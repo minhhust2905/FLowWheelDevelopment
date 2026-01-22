@@ -151,7 +151,7 @@ global cfg := {
 
 global colors := {
     ; === PRIMARY PALETTE (Từ núi và nước) ===
-    primary: "6B7C6E",         ; Xanh núi xa (chủ đạo)
+    primary: "6A9ABF",         
     primaryDark: "4A5A4D",     ; Xanh rêu đậm (text, header)
     primaryLight: "A8B5B2",    ; Xanh xám núi gần (backgrounds nhẹ)
     
