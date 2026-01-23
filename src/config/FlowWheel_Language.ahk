@@ -9,9 +9,8 @@ PlayGestureSound() {
         return
     ; Phát âm thanh nhẹ nhàng từ file nếu có
     ; Kiểm tra trong thư mục script hoặc thư mục làm việc
-    soundFile := A_ScriptDir . "\resources\sounds\FlowWheelSoundFeedback.wav"
-    if !FileExist(soundFile)
-        soundFile := A_ScriptDir . "\resources\FlowWheelSoundFeedback.wav" ; Legacy path
+    parentDir := RegExReplace(A_ScriptDir, "\\[^\\]+$", "")
+    soundFile := parentDir . "\resources\sounds\FlowWheelSoundFeedback.wav"
     if FileExist(soundFile)
         SoundPlay soundFile, "wait"
     else

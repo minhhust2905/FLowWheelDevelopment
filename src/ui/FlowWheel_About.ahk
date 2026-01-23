@@ -40,18 +40,9 @@ ShowAbout(*) {
     aboutGui.AddText("Center x20 y320 w360", _t("☕ Ủng hộ phát triển"))
     
     ; QR code
-    ; Ưu tiên đúng thư mục gốc dự án/resources/images
-    qrCandidates := [
-        A_ScriptDir . "\resources\images\QR.png",
-    ]
-    qrPath := ""
-    for path in qrCandidates {
-        if FileExist(path) {
-            qrPath := path
-            break
-        }
-    }
-    if (qrPath != "") {
+    parentDir := RegExReplace(A_ScriptDir, "\\[^\\]+$", "")
+    qrPath := parentDir . "\resources\images\QR.png"
+    if FileExist(qrPath) {
         try {
             aboutGui.AddPicture("x120 y345 w160 h160", qrPath)
         } catch {
@@ -62,7 +53,7 @@ ShowAbout(*) {
         aboutGui.SetFont("s9 c" . colors.danger)
         aboutGui.AddText("Center x20 y365 w360", _t("(Không tìm thấy QR.png)"))
         aboutGui.SetFont("s8 c" . colors.textLight)
-        aboutGui.AddText("Center x20 y385 w360", _t("Path: ") . qrCandidates[1])
+        aboutGui.AddText("Center x20 y385 w360", _t("Path: ") . qrPath)
     }
     
     aboutGui.SetFont("s8 c" . colors.textLight)

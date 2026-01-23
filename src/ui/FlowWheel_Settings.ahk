@@ -237,7 +237,7 @@ ShowSettings() {
             ; Nếu đang mở thì ẩn đi
             settingsGui.Destroy()
             settingsGui := unset
-            return
+            ; Không return, tiếp tục tạo lại GUI
         }
     }
     CreateSettingsGui()

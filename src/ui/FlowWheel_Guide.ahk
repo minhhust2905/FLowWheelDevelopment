@@ -48,26 +48,13 @@ ShowGestureGuide(*) {
     
     guideGui.AddText("x50 y185 w230 h280 Background" . colors.bgDark . " +0x400000", "")
     try {
-        ; Luôn ưu tiên đúng thư mục gốc dự án/resources/images
-        guideCandidates := [
-            A_ScriptDir . "\resources\images\mouse_guide.png",
-        ]
-        found := false
-        for path in guideCandidates {
-            if FileExist(path) {
-                guideGui.AddPicture("x65 y205 w200 h240", path)
-                found := true
-                break
-            }
-        }
-        if !found {
+        parentDir := RegExReplace(A_ScriptDir, "\\[^\\]+$", "")
+        guidePath := parentDir . "\resources\images\mouse_guide.png"
+        if FileExist(guidePath) {
+            guideGui.AddPicture("x65 y205 w200 h240", guidePath)
+        } else {
             guideGui.SetFont("s9 c" . colors.textLight, "Segoe UI")
-            MsgBox("Không tìm thấy file mouse_guide.png trong các thư mục:\n" 
-                . A_ScriptDir . "\\resources\\images\\mouse_guide.png\n"
-                . A_ScriptDir . "\\resources\\mouse_guide.png\n"
-                . A_ScriptDir . "\\images\\mouse_guide.png\n"
-                . A_ScriptDir . "\\mouse_guide.png\n"
-                , "Không tìm thấy ảnh hướng dẫn", "Icon!")
+            MsgBox("Không tìm thấy file mouse_guide.png tại: " . guidePath, "Không tìm thấy ảnh hướng dẫn", "Icon!")
         }
     } catch {
         guideGui.SetFont("s9 c" . colors.textLight, "Segoe UI")
