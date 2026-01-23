@@ -40,8 +40,7 @@ ShowAbout(*) {
     aboutGui.AddText("Center x20 y320 w360", _t("☕ Ủng hộ phát triển"))
     
     ; QR code
-    parentDir := RegExReplace(A_ScriptDir, "\\[^\\]+$", "")
-    qrPath := parentDir . "\resources\images\QR.png"
+    qrPath := A_ScriptDir . "\resources\images\QR.png"
     if FileExist(qrPath) {
         try {
             aboutGui.AddPicture("x120 y345 w160 h160", qrPath)

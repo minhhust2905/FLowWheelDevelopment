@@ -48,8 +48,7 @@ ShowGestureGuide(*) {
     
     guideGui.AddText("x50 y185 w230 h280 Background" . colors.bgDark . " +0x400000", "")
     try {
-        parentDir := RegExReplace(A_ScriptDir, "\\[^\\]+$", "")
-        guidePath := parentDir . "\resources\images\mouse_guide.png"
+        guidePath := A_ScriptDir . "\resources\images\mouse_guide.png"
         if FileExist(guidePath) {
             guideGui.AddPicture("x65 y205 w200 h240", guidePath)
         } else {

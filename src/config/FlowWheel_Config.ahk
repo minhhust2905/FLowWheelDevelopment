@@ -16,74 +16,23 @@ LoadConfig() {
         
         ; Load config if file exists
         if FileExist(configFile) {
-            ; Gestures
-            cfg.gestures.tabSwitch := Integer(IniRead(configFile, "Gestures", "tabSwitch", 1))
-            cfg.gestures.windowSwitch := Integer(IniRead(configFile, "Gestures", "windowSwitch", 1))
-            cfg.gestures.taskbarfocus := Integer(IniRead(configFile, "Gestures", "taskbarfocus", 1))
-            cfg.gestures.zoom := Integer(IniRead(configFile, "Gestures", "zoom", 1))
-            cfg.gestures.volume := Integer(IniRead(configFile, "Gestures", "volume", 1))
-            cfg.gestures.brightness := Integer(IniRead(configFile, "Gestures", "brightness", 1))
-            cfg.gestures.tabClose := Integer(IniRead(configFile, "Gestures", "tabClose", 1))
-            cfg.gestures.tabRestore := Integer(IniRead(configFile, "Gestures", "tabRestore", 1))
-            cfg.gestures.comboClose := Integer(IniRead(configFile, "Gestures", "comboClose", 1))
-            cfg.gestures.taskbarClose := Integer(IniRead(configFile, "Gestures", "taskbarClose", 1))
-            cfg.gestures.ninjaVanish := Integer(IniRead(configFile, "Gestures", "ninjaVanish", 1))
-            cfg.gestures.mute := Integer(IniRead(configFile, "Gestures", "mute", 0))
-            cfg.gestures.horizontalScroll := Integer(IniRead(configFile, "Gestures", "horizontalScroll", 1))
-            cfg.gestures.quickScreenshot := Integer(IniRead(configFile, "Gestures", "quickScreenshot", 1))
-            cfg.gestures.windowSnap := Integer(IniRead(configFile, "Gestures", "windowSnap", 1))
-            
-            ; Feedback
-            cfg.feedback.enabled := Integer(IniRead(configFile, "Feedback", "enabled", 1))
-            cfg.feedback.duration := Integer(IniRead(configFile, "Feedback", "duration", 1000))
-            cfg.feedback.position := IniRead(configFile, "Feedback", "position", "cursor")
-            cfg.feedback.theme := IniRead(configFile, "Feedback", "theme", "dark")
-            cfg.feedback.soundEnabled := Integer(IniRead(configFile, "Feedback", "soundEnabled", 1))
-            cfg.feedbackCooldown.lastSentTime := Integer(IniRead(configFile, "Feedback", "lastSentTime", 0))
-            cfg.feedbackCooldown.feedbackStep := Integer(IniRead(configFile, "Feedback", "feedbackStep", 1))
-            
-            ; Advanced
-            cfg.advanced.volumeStep := Integer(IniRead(configFile, "Advanced", "volumeStep", 2))
-            cfg.advanced.brightnessStep := Integer(IniRead(configFile, "Advanced", "brightnessStep", 5))
-            cfg.advanced.volumeDebounce := Integer(IniRead(configFile, "Advanced", "volumeDebounce", 30))
-            cfg.advanced.brightnessDebounce := Integer(IniRead(configFile, "Advanced", "brightnessDebounce", 40))
-            cfg.advanced.mButtonTimeout := Integer(IniRead(configFile, "Advanced", "mButtonTimeout", 300))
-            cfg.advanced.scrollAcceleration := Integer(IniRead(configFile, "Advanced", "scrollAcceleration", 0))
-            cfg.advanced.startWithWindows := Integer(IniRead(configFile, "Advanced", "startWithWindows", 0))
-            cfg.advanced.showStartup := Integer(IniRead(configFile, "Advanced", "showStartup", 1))
-            cfg.advanced.debugMode := Integer(IniRead(configFile, "Advanced", "debugMode", 0))
-            
-            ; Stats
-            cfg.stats.tabSwitch := Integer(IniRead(configFile, "Stats", "tabSwitch", 0))
-            cfg.stats.windowSwitch := Integer(IniRead(configFile, "Stats", "windowSwitch", 0))
-            cfg.stats.taskbarfocus := Integer(IniRead(configFile, "Stats", "taskbarfocus", 0))
-            cfg.stats.volume := Integer(IniRead(configFile, "Stats", "volume", 0))
-            cfg.stats.brightness := Integer(IniRead(configFile, "Stats", "brightness", 0))
-            cfg.stats.mute := Integer(IniRead(configFile, "Stats", "mute", 0))
-            cfg.stats.zoom := Integer(IniRead(configFile, "Stats", "zoom", 0))
-            cfg.stats.tabClose := Integer(IniRead(configFile, "Stats", "tabClose", 0))
-            cfg.stats.tabRestore := Integer(IniRead(configFile, "Stats", "tabRestore", 0))
-            cfg.stats.horizontalScroll := Integer(IniRead(configFile, "Stats", "horizontalScroll", 0))
-            cfg.stats.screenshot := Integer(IniRead(configFile, "Stats", "screenshot", 0))
-            cfg.stats.windowSnap := Integer(IniRead(configFile, "Stats", "windowSnap", 0))
-            cfg.stats.feedbackSent := Integer(IniRead(configFile, "Stats", "feedbackSent", 0))
-            cfg.stats.secondsSaved := Integer(IniRead(configFile, "Stats", "secondsSaved", 0))
-            
-            ; General
+            ; ...existing code...
             cfg.firstRun := Integer(IniRead(configFile, "General", "firstRun", 1))
             cfg.language := IniRead(configFile, "General", "language", "en")
-            
-            ; Ensure mute gesture property exists
-            if (!cfg.gestures.HasOwnProp("mute"))
-                cfg.gestures.mute := false
-                
-            ; Ensure soundEnabled property exists
-            if (!cfg.feedback.HasOwnProp("soundEnabled"))
-                cfg.feedback.soundEnabled := true
-                
-            ; Ensure scrollAcceleration property exists
-            if (!cfg.advanced.HasOwnProp("scrollAcceleration"))
-                cfg.advanced.scrollAcceleration := 0
+            ; ...existing code...
+        }
+        ; Nếu lần đầu chạy và chưa có thiết lập ngôn ngữ, tự động phát hiện ngôn ngữ hệ điều hành
+        if (cfg.firstRun = 1) {
+            if (!cfg.HasOwnProp("language") || cfg.language = "" || cfg.language = "en") {
+                ; Lấy mã ngôn ngữ hệ điều hành
+                langId := DllCall("GetUserDefaultUILanguage")
+                if (langId = 1066) { ; 1066 = Vietnamese
+                    cfg.language := "vi"
+                } else {
+                    cfg.language := "en"
+                }
+                IniWrite(cfg.language, configFile, "General", "language")
+            }
         }
     } catch as err {
         MsgBox(_t("Error loading config") . ": " . err.Message, _t("Config Error"), "Icon!")
