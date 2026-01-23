@@ -19,12 +19,12 @@ SavePositionDebounce(pos) {
 global gestureGuideMap
 CreateGestureCard(gui, x, y, w, label, isChecked) {
     ; Outer card (creates border effect) 
-    borderBg := isChecked ? "5A8FB2" : "E0E0E0"
+    borderBg := isChecked ? "7DBE7C" : "E0E0E0"
     cardOuter := gui.AddText("x" x " y" y " w" w " h48 Background" . borderBg, "")
     RoundControl(cardOuter.Hwnd, 16)
     
     ; Inner card  (giữ cố định offset 2px)
-    innerBgColor := isChecked ? "D6E4F0" : "FFFFFF"
+    innerBgColor := isChecked ? "DFF5E3" : "FFFFFF"
     innerBg := gui.AddText("x" (x+2) " y" (y+2) " w" (w-4) " h44 Background" . innerBgColor, "")
     RoundControl(innerBg.Hwnd, 14)
     
@@ -79,11 +79,11 @@ GestureCardClick(ctrl, *) {
     card.Value := !card.Value
 
     ; Update outer card background (border color)
-    outerBg := card.Value ? "5A8FB2" : "E0E0E0"
+    outerBg := card.Value ? "7DBE7C" : "E0E0E0"
     card.cardOuter.Opt("Background" . outerBg)
 
     ; Update inner card color (giữ nguyên kích thước)
-    innerBgColor := card.Value ? "D6E4F0" : "FFFFFF"
+    innerBgColor := card.Value ? "DFF5E3" : "FFFFFF"
     card.innerBg.Opt("Background" . innerBgColor)
 
     ; Force redraw
@@ -111,12 +111,12 @@ GestureCardClick(ctrl, *) {
 ; === CREATE POSITION CARD (Radio-style Selection) ===
 CreatePositionCard(gui, x, y, w, label, icon, isSelected, positionValue) {
     ; Outer card
-    borderBg := isSelected ? "5A8FB2" : "E0E0E0"
+    borderBg := isSelected ? "7DBE7C" : "E0E0E0"
     cardOuter := gui.AddText("x" x " y" y " w" w " h48 Background" . borderBg, "")
     RoundControl(cardOuter.Hwnd, 16)
     
     ; Inner card
-    innerBgColor := isSelected ? "D6E4F0" : "FFFFFF"
+    innerBgColor := isSelected ? "DFF5E3" : "FFFFFF"
     innerBg := gui.AddText("x" (x+2) " y" (y+2) " w" (w-4) " h44 Background" . innerBgColor, "")
     RoundControl(innerBg.Hwnd, 14)
     
@@ -173,8 +173,8 @@ PositionCardClick(ctrl, *) {
         isSelected := (posCard.position = selectedPosition)
 
         ; Update colors
-        outerBg := isSelected ? "5A8FB2" : "E0E0E0"
-        innerBgColor := isSelected ? "D6E4F0" : "FFFFFF"
+        outerBg := isSelected ? "7DBE7C" : "E0E0E0"
+        innerBgColor := isSelected ? "DFF5E3" : "FFFFFF"
         posCard.cardOuter.Opt("Background" . outerBg)
         posCard.innerBg.Opt("Background" . innerBgColor)
 

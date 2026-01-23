@@ -35,7 +35,7 @@ ShowGestureGuide(*) {
     ; Settings button top right with effect
     btnSet := guideGui.AddButton("x1120 y25 w50 h50", "⚙️")
     btnSet.SetFont("s18", "Segoe UI Emoji")
-    btnSet.OnEvent("Click", (*) => (guideGui.Destroy(), ShowSettings()))
+    btnSet.OnEvent("Click", (*) => (guideGui.Hide(), ShowSettings()))
     RoundControl(btnSet.Hwnd, 10)
     guideGui.SetFont("s9 cFFFFFF", "Segoe UI")
     guideGui.AddText("x1090 y75 w110 Center Background" . colors.primary, _t("Nhấn để mở cài đặt"))
@@ -48,11 +48,9 @@ ShowGestureGuide(*) {
     
     guideGui.AddText("x50 y185 w230 h280 Background" . colors.bgDark . " +0x400000", "")
     try {
+        ; Luôn ưu tiên đúng thư mục gốc dự án/resources/images
         guideCandidates := [
             A_ScriptDir . "\resources\images\mouse_guide.png",
-            A_ScriptDir . "\resources\mouse_guide.png",
-            A_ScriptDir . "\images\mouse_guide.png",
-            A_ScriptDir . "\mouse_guide.png"
         ]
         found := false
         for path in guideCandidates {
@@ -64,6 +62,12 @@ ShowGestureGuide(*) {
         }
         if !found {
             guideGui.SetFont("s9 c" . colors.textLight, "Segoe UI")
+            MsgBox("Không tìm thấy file mouse_guide.png trong các thư mục:\n" 
+                . A_ScriptDir . "\\resources\\images\\mouse_guide.png\n"
+                . A_ScriptDir . "\\resources\\mouse_guide.png\n"
+                . A_ScriptDir . "\\images\\mouse_guide.png\n"
+                . A_ScriptDir . "\\mouse_guide.png\n"
+                , "Không tìm thấy ảnh hướng dẫn", "Icon!")
         }
     } catch {
         guideGui.SetFont("s9 c" . colors.textLight, "Segoe UI")

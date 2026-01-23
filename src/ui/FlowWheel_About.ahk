@@ -40,11 +40,9 @@ ShowAbout(*) {
     aboutGui.AddText("Center x20 y320 w360", _t("☕ Ủng hộ phát triển"))
     
     ; QR code
+    ; Ưu tiên đúng thư mục gốc dự án/resources/images
     qrCandidates := [
         A_ScriptDir . "\resources\images\QR.png",
-        A_ScriptDir . "\resources\QR.png",
-        A_ScriptDir . "\images\QR.png",
-        A_ScriptDir . "\QR.png"
     ]
     qrPath := ""
     for path in qrCandidates {

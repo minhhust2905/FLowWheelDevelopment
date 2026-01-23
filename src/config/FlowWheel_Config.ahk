@@ -5,26 +5,13 @@
 ; --- LOAD CONFIGURATION FROM FILE ---
 LoadConfig() {
     try {
-        ; Ưu tiên: cùng cấp với exe
-        configCandidates := [
-            A_ScriptDir . "\resources\config\flowwheel.ini",
-            A_ScriptDir . "\resources\flowwheel.ini",
-            A_ScriptDir . "\config\flowwheel.ini",
-            A_ScriptDir . "\flowwheel.ini"
-        ]
-        configFile := ""
-        for path in configCandidates {
-            if FileExist(path) {
-                configFile := path
-                break
-            }
-        }
-        ; Nếu là exe và không tìm thấy, dùng AppData
-        if (A_IsCompiled && configFile = "") {
-            configDir := A_AppData . "\FlowWheel"
+        ; Luôn dùng đúng file config/stats tại thư mục gốc dự án
+        configFile := "E:\FlowWheelModule\resources\config\flowwheel.ini"
+        if !FileExist(configFile) {
+            ; Nếu chưa có, tạo thư mục
+            SplitPath(configFile, , &configDir)
             if !DirExist(configDir)
                 DirCreate(configDir)
-            configFile := configDir . "\flowwheel.ini"
         }
         
         ; Load config if file exists
@@ -106,30 +93,8 @@ LoadConfig() {
 ; --- SAVE CONFIGURATION TO FILE ---
 SaveConfig() {
     try {
-        ; Ưu tiên: cùng cấp với exe
-        configCandidates := [
-            A_ScriptDir . "\resources\config\flowwheel.ini",
-            A_ScriptDir . "\resources\flowwheel.ini",
-            A_ScriptDir . "\config\flowwheel.ini",
-            A_ScriptDir . "\flowwheel.ini"
-        ]
-        configFile := ""
-        for path in configCandidates {
-            configDir := ""
-            SplitPath(path, , &configDir)
-            if DirExist(configDir) {
-                configFile := path
-                break
-            }
-        }
-        ; Nếu là exe và không ghi được, dùng AppData
-        if (A_IsCompiled && (configFile = "" || !DirExist(configDir))) {
-            configDir := A_AppData . "\FlowWheel"
-            if !DirExist(configDir)
-                DirCreate(configDir)
-            configFile := configDir . "\flowwheel.ini"
-        }
-        ; Đảm bảo thư mục tồn tại
+        ; Luôn dùng đúng file config/stats tại thư mục gốc dự án
+        configFile := "E:\FlowWheelModule\resources\config\flowwheel.ini"
         SplitPath(configFile, , &configDir)
         if !DirExist(configDir)
             DirCreate(configDir)

@@ -9,6 +9,17 @@
 A_MenuMaskKey := "vkE8"
 
 ; ============================================================================
+; ĐẢM BẢO CHỈ CÓ 1 INSTANCE FLOWWHEEL.EXE (KHI CHẠY EXE)
+; ============================================================================
+if (A_IsCompiled) {
+    pid := ProcessExist("FlowWheel.exe")
+    if (pid && pid != DllCall("GetCurrentProcessId")) {
+        ProcessClose(pid)
+        Sleep 500
+    }
+}
+
+; ============================================================================
 ; INCLUDES - Load all modules
 ; ============================================================================
 
