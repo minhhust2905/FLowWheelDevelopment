@@ -6,7 +6,7 @@
 #define MyAppExeName "FlowWheel.exe"
 
 [Setup]
-AppId={{8C8147CF-DCD1-4C7E-B7C0-54FC3D18A27D}
+AppId={8C8147CF-DCD1-4C7E-B7C0-54FC3D18A27D}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
